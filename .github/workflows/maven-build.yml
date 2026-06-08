@@ -2,12 +2,17 @@ name: Maven Build Workflow
 
 on:
   workflow_call:
+    inputs:
+      java-version:
+        required: true
+        type: string
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -15,7 +20,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: ${{ inputs.java-version }}
 
       - name: Build Project
         run: mvn clean package

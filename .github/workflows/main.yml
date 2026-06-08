@@ -8,3 +8,6 @@ on:
 jobs:
   call-build:
     uses: ./.github/workflows/maven-build.yml
+
+    with:
+      java-version: "17"
