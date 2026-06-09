@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @GetMapping("/")
-    public String hello() {
-        return "Deployment Success via GitHub Actions";
-    }
+   @GetMapping("/")
+    public String home() {
+    return "Version 2 deployed from GitHub Actions";
+}
 }
