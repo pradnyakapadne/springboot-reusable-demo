@@ -29,12 +29,9 @@ jobs:
           *.jar \
           ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ec2-user/springboot-app/
 
-          - name: Debug SSH Connection
-          run: |
-            ssh -vvv -o StrictHostKeyChecking=no \
-            -i key.pem \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "echo CONNECTED"
-            whoami
-            pwd
-            ls -ltr /home/ec2-user/springboot-app
-            "
+      - name: Debug SSH Connection
+        run: |
+          ssh -vvv -o StrictHostKeyChecking=no \
+          -i key.pem \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+          "echo CONNECTED && whoami && pwd && ls -ltr /home/ec2-user/springboot-app"
