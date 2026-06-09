@@ -77,14 +77,19 @@ jobs:
           sed -i "s|<IMAGE_URI>|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG|g" taskdef.json
 
       - name: Register new Task Definition
+        id: taskdef
         run: |
-          aws ecs register-task-definition \
-            --cli-input-json file://taskdef.json
+          TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://taskdef.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
 
-      - name: Update ECS Service
+          echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
+
+      - name: Update ECS Service with new task definition
         run: |
           aws ecs update-service \
             --cluster ${{ secrets.ECS_CLUSTER }} \
             --service ${{ secrets.ECS_SERVICE }} \
-            --force-new-deployment \
+            --task-definition $TASK_DEF_ARN \
             --region $AWS_REGION
