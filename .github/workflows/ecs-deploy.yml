@@ -8,8 +8,8 @@ on:
 env:
   AWS_REGION: ap-south-1
   ECR_REPOSITORY: springboot-ecs-app
-  IMAGE_TAG: latest
   AWS_ACCOUNT_ID: 293033346072
+  IMAGE_TAG: ${{ github.run_number }}
 #test
 jobs:
 
@@ -69,10 +69,19 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Force ECS Deployment
+      - name: Render ECS Task Definition
+        run: |
+          sed -i "s|<IMAGE_URI>|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG|g" taskdef.json
+
+      - name: Register new Task Definition
+        run: |
+          aws ecs register-task-definition \
+            --cli-input-json file://taskdef.json
+
+      - name: Update ECS Service
         run: |
           aws ecs update-service \
-          --cluster ${{ secrets.ECS_CLUSTER }} \
-          --service ${{ secrets.ECS_SERVICE }} \
-          --force-new-deployment \
-          --region $AWS_REGION
+            --cluster ${{ secrets.ECS_CLUSTER }} \
+            --service ${{ secrets.ECS_SERVICE }} \
+            --force-new-deployment \
+            --region $AWS_REGION
