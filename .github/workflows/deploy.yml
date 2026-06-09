@@ -1,41 +1,41 @@
-name: Reusable Deploy
+  name: Reusable Deploy
 
-on:
-  workflow_call:
-    inputs:
-      build_type:
-        required: true
-        type: string
+  on:
+    workflow_call:
+      inputs:
+        build_type:
+          required: true
+          type: string
 
-jobs:
+  jobs:
 
-  deploy:
-    runs-on: ubuntu-latest
+    deploy:
+      runs-on: ubuntu-latest
 
-    steps:
+      steps:
 
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: app-artifact
+        - name: Download Artifact
+          uses: actions/download-artifact@v4
+          with:
+            name: app-artifact
 
-      - name: Create SSH Key
-        run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
-          chmod 600 key.pem
+        - name: Create SSH Key
+          run: |
+            echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
+            chmod 600 key.pem
 
-      - name: Deploy Maven Artifact
-        if: ${{ inputs.build_type == 'maven' }}
-        run: |
-          scp -o StrictHostKeyChecking=no \
-          -i key.pem \
-          *.jar \
-          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ec2-user/maven-app/
+        - name: Deploy Maven Artifact
+          if: ${{ inputs.build_type == 'maven' }}
+          run: |
+            scp -o StrictHostKeyChecking=no \
+            -i key.pem \
+            *.jar \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ec2-user/maven-app/
 
-      - name: Deploy Spring Boot Artifact
-        if: ${{ inputs.build_type == 'spring-boot' }}
-        run: |
-          scp -o StrictHostKeyChecking=no \
-          -i key.pem \
-          *.jar \
-          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ec2-user/springboot-app/
+        - name: Deploy Spring Boot Artifact
+          if: ${{ inputs.build_type == 'spring-boot' }}
+          run: |
+            scp -o StrictHostKeyChecking=no \
+            -i key.pem \
+            *.jar \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ec2-user/springboot-app/
