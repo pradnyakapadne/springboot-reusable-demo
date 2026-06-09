@@ -10,7 +10,7 @@ env:
   ECR_REPOSITORY: springboot-ecs-app
   IMAGE_TAG: latest
   AWS_ACCOUNT_ID: 293033346072
-
+#test
 jobs:
 
   build-and-push:
