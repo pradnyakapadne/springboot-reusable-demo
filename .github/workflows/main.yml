@@ -6,8 +6,13 @@ on:
       - main
 
 jobs:
-  call-build:
-    uses: ./.github/workflows/maven-build.yml
 
+  build:
+    uses: ./.github/workflows/maven-build.yml
     with:
       java-version: "17"
+
+  deploy:
+    needs: build
+    uses: ./.github/workflows/deploy-ec2.yml
+    secrets: inherit
