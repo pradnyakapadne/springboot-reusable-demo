@@ -8,11 +8,13 @@ on:
 jobs:
 
   build:
-    uses: ./.github/workflows/maven-build.yml
+    uses: ./.github/workflows/build.yaml
     with:
-      java-version: "17"
+      build_type: spring-boot
 
   deploy:
     needs: build
-    uses: ./.github/workflows/deploy-ec2.yml
+    uses: ./.github/workflows/deploy.yml
+    with:
+      build_type: spring-boot
     secrets: inherit

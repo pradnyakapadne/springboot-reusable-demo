@@ -1,0 +1,39 @@
+name: Reusable Build
+
+on:
+  workflow_call:
+    inputs:
+      build_type:
+        required: true
+        type: string
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build Maven Project
+        if: ${{ inputs.build_type == 'maven' }}
+        run: |
+          mvn clean package
+
+      - name: Build Spring Boot Project
+        if: ${{ inputs.build_type == 'spring-boot' }}
+        run: |
+          mvn clean package
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-artifact
+          path: target/*.jar
