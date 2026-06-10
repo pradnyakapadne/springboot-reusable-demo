@@ -1,20 +1,23 @@
 name: Main Pipeline
 
 on:
-  workflow_dispatch:
-
-permissions:
-  id-token: write
-  contents: read
+  workflow_dispatch
 
 jobs:
 
   build:
-    uses: ./.github/workflows/build.yaml
+    uses: ./.github/workflows/build.yml
     with:
       build_type: spring-boot
 
-  deploy:
+  deploy-dev:
     needs: build
     uses: ./.github/workflows/ecs-deploy.yml
-    secrets: inherit
+    with:
+      environment: Dev
+
+  deploy-prod:
+    needs: deploy-dev
+    uses: ./.github/workflows/ecs-deploy.yml
+    with:
+      environment: Prod

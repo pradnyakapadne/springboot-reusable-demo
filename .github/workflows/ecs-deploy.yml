@@ -7,6 +7,10 @@ on:
         required: false
         type: string
 
+      environment:
+        required: true
+        type: string
+
 permissions:
   id-token: write
   contents: read
@@ -43,7 +47,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-            role-to-assume: arn:aws:iam::293033346072:role/github-oidc-role
+            #role-to-assume: arn:aws:iam::293033346072:role/github-oidc-role
+            role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
             aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -64,6 +69,8 @@ jobs:
   deploy-to-ecs:
     needs: build-and-push
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment}}
 
     steps:
 
