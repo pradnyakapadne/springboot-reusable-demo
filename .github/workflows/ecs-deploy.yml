@@ -1,9 +1,11 @@
 name: ECS Deploy Pipeline
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      build_type:
+        required: false
+        type: string
 
 env:
   AWS_REGION: ap-south-1

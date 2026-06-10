@@ -14,7 +14,7 @@ jobs:
 
   deploy:
     needs: build
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/ecs-deploy.yml
     with:
       build_type: spring-boot
     secrets: inherit
