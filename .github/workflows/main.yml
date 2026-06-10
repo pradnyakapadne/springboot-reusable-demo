@@ -18,7 +18,7 @@ jobs:
     needs: build
     uses: ./.github/workflows/ecs-deploy.yml
     with:
-      environment: Dev
+      environment: DEV
 
   deploy-prod:
     needs: deploy-dev
