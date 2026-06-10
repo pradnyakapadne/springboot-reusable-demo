@@ -1,9 +1,11 @@
 name: Main Pipeline
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
 
@@ -15,6 +17,4 @@ jobs:
   deploy:
     needs: build
     uses: ./.github/workflows/ecs-deploy.yml
-    with:
-      build_type: spring-boot
     secrets: inherit

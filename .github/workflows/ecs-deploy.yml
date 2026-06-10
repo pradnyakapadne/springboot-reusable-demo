@@ -7,6 +7,10 @@ on:
         required: false
         type: string
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   AWS_REGION: ap-south-1
   ECR_REPOSITORY: reusable-repo
