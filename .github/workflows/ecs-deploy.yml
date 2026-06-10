@@ -9,7 +9,7 @@ on:
 
 env:
   AWS_REGION: ap-south-1
-  ECR_REPOSITORY: springboot-ecs-app
+  ECR_REPOSITORY: reusable-repo
   AWS_ACCOUNT_ID: 293033346072
   IMAGE_TAG: ${{ github.run_number }}
 #test

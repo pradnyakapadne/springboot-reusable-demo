@@ -7,7 +7,7 @@
   "executionRoleArn": "arn:aws:iam::293033346072:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
-      "name": "springboot-ecs-app",
+      "name": "reusable-repo",
       "image": "<IMAGE_URI>",
       "essential": true,
       "portMappings": [
@@ -19,7 +19,7 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/springboot-ecs-app",
+          "awslogs-group": "/ecs/reusable-repo",
           "awslogs-region": "ap-south-1",
           "awslogs-stream-prefix": "ecs"
         }
