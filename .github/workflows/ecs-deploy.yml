@@ -95,3 +95,6 @@ jobs:
             --service ${{ secrets.ECS_SERVICE }} \
             --task-definition $TASK_DEF_ARN \
             --region $AWS_REGION
+          
+            echo "Cluster=${{ secrets.ECS_CLUSTER }}"
+            echo "Service=${{ secrets.ECS_SERVICE }}"
