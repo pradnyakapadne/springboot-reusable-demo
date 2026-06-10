@@ -6,7 +6,7 @@ on:
 jobs:
 
   build:
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/build.yaml
     with:
       build_type: spring-boot
 
