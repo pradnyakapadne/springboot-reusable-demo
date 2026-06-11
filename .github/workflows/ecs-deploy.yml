@@ -54,15 +54,6 @@ jobs:
             #role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
             aws-region: ${{ env.AWS_REGION }}
 
-      - name: Verify AWS Role Secret
-        run: |
-          if [ -z "${{ secrets.AWS_ROLE_ARN }}" ]; then
-          echo "AWS_ROLE_ARN is EMPTY"
-          exit 1
-          else
-          echo "AWS_ROLE_ARN is present"
-          if    
-
       - name: Login to Amazon ECR
         run: |
               aws ecr get-login-password --region $AWS_REGION \
