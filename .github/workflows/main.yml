@@ -19,9 +19,13 @@ jobs:
     uses: ./.github/workflows/ecs-deploy.yml
     with:
       environment: DEV
+      cluster: springboot-maven-cluster
+      service: workflow-definition
 
   deploy-prod:
     needs: deploy-dev
     uses: ./.github/workflows/ecs-deploy.yml
     with:
-      environment: Prod
+      environment: PROD
+      cluster: springboot-maven-cluster
+      service: workflow-definition
