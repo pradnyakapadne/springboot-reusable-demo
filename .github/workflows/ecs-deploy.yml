@@ -20,7 +20,7 @@ env:
   ECR_REPOSITORY: reusable-repo
   AWS_ACCOUNT_ID: 293033346072
   IMAGE_TAG: ${{ github.run_number }}
-#test
+
 jobs:
 
   build-and-push:
@@ -50,30 +50,30 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-            role-to-assume: arn:aws:iam::293033346072:role/github-oidc-role
-            #role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-            aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::293033346072:role/github-oidc-role
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         run: |
-              aws ecr get-login-password --region $AWS_REGION \
-              | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+          aws ecr get-login-password --region $AWS_REGION \
+          | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
       - name: Tag Image
         run: |
-              docker tag $ECR_REPOSITORY:$IMAGE_TAG \
-              $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG \
+          $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Push Image to ECR
         run: |
-              docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
 
   deploy-to-ecs:
     needs: build-and-push
     runs-on: ubuntu-latest
+
     environment:
-      name: ${{ inputs.environment}}
+      name: ${{ inputs.environment }}
 
     steps:
 
@@ -83,8 +83,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-            role-to-assume: arn:aws:iam::293033346072:role/github-oidc-role
-            aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::293033346072:role/github-oidc-role
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Render ECS Task Definition
         run: |
@@ -103,10 +103,10 @@ jobs:
       - name: Update ECS Service with new task definition
         run: |
           aws ecs update-service \
-            --cluster ${{ secrets.ECS_CLUSTER }} \
-            --service ${{ secrets.ECS_SERVICE }} \
+            --cluster $ECS_CLUSTER \
+            --service $ECS_SERVICE \
             --task-definition $TASK_DEF_ARN \
             --region $AWS_REGION
-          
-            echo "Cluster=${{ secrets.ECS_CLUSTER }}"
-            echo "Service=${{ secrets.ECS_SERVICE }}"
+
+          echo "Cluster=$ECS_CLUSTER"
+          echo "Service=$ECS_SERVICE"
