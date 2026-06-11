@@ -8,6 +8,5 @@ public class HelloController {
 
    @GetMapping("/")
     public String home() {
-    return "Version 7 deployed from GitHub Actions";
-}
+    return "Version 8 deployed from GitHub Actions";}
 }
